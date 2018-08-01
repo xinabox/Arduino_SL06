@@ -17,9 +17,6 @@
 // Include File Headers
 #include "xCore.h"
 
-// I2C Chip Addresses
-#define APDS9960_I2C_ADDR       0x39
-
 /* Gesture parameters */
 #define GESTURE_THRESHOLD_OUT   10
 #define GESTURE_SENSITIVITY_1   50
@@ -29,62 +26,62 @@
 #define ERROR                   0xFF
 
 /* Acceptable device IDs */
-#define APDS9960_ID_0           0xAB
-#define APDS9960_ID_1           0x9C 
+#define APDS9960_ID_1           0xAB
+#define APDS9960_ID_2           0x9C 
 
 /* Misc parameters */
-#define FIFO_PAUSE_TIME         30 
+#define FIFO_PAUSE_TIME         30      // Wait period (ms) between FIFO reads
 
 /* APDS-9960 register addresses */
-#define APDS9960_REG_ENABLE         0x80
-#define APDS9960_REG_ATIME          0x81
-#define APDS9960_REG_WTIME          0x83
-#define APDS9960_REG_AILTL          0x84
-#define APDS9960_REG_AILTH          0x85
-#define APDS9960_REG_AIHTL          0x86
-#define APDS9960_REG_AIHTH          0x87
-#define APDS9960_REG_PILT           0x89
-#define APDS9960_REG_PIHT           0x8B
-#define APDS9960_REG_PERS           0x8C
-#define APDS9960_REG_CONFIG1        0x8D
-#define APDS9960_REG_PPULSE         0x8E
-#define APDS9960_REG_CONTROL        0x8F
-#define APDS9960_REG_CONFIG2        0x90
-#define APDS9960_REG_ID             0x92
-#define APDS9960_REG_STATUS         0x93
-#define APDS9960_REG_CDATAL         0x94
-#define APDS9960_REG_CDATAH         0x95
-#define APDS9960_REG_RDATAL         0x96
-#define APDS9960_REG_RDATAH         0x97
-#define APDS9960_REG_GDATAL         0x98
-#define APDS9960_REG_GDATAH         0x99
-#define APDS9960_REG_BDATAL         0x9A
-#define APDS9960_REG_BDATAH         0x9B
-#define APDS9960_REG_PDATA          0x9C
-#define APDS9960_REG_POFFSET_UR     0x9D
-#define APDS9960_REG_POFFSET_DL     0x9E
-#define APDS9960_REG_CONFIG3        0x9F
-#define APDS9960_REG_GPENTH         0xA0
-#define APDS9960_REG_GEXTH          0xA1
-#define APDS9960_REG_GCONF1         0xA2
-#define APDS9960_REG_GCONF2         0xA3
-#define APDS9960_REG_GOFFSET_U      0xA4
-#define APDS9960_REG_GOFFSET_D      0xA5
-#define APDS9960_REG_GOFFSET_L      0xA7
-#define APDS9960_REG_GOFFSET_R      0xA9
-#define APDS9960_REG_GPULSE         0xA6
-#define APDS9960_REG_GCONF3         0xAA
-#define APDS9960_REG_GCONF4         0xAB
-#define APDS9960_REG_GFLVL          0xAE
-#define APDS9960_REG_GSTATUS        0xAF
-#define APDS9960_REG_IFORCE         0xE4
-#define APDS9960_REG_PICLEAR        0xE5
-#define APDS9960_REG_CICLEAR        0xE6
-#define APDS9960_REG_AICLEAR        0xE7
-#define APDS9960_REG_GFIFO_U        0xFC
-#define APDS9960_REG_GFIFO_D        0xFD
-#define APDS9960_REG_GFIFO_L        0xFE
-#define APDS9960_REG_GFIFO_R        0xFF
+#define APDS9960_ENABLE         0x80
+#define APDS9960_ATIME          0x81
+#define APDS9960_WTIME          0x83
+#define APDS9960_AILTL          0x84
+#define APDS9960_AILTH          0x85
+#define APDS9960_AIHTL          0x86
+#define APDS9960_AIHTH          0x87
+#define APDS9960_PILT           0x89
+#define APDS9960_PIHT           0x8B
+#define APDS9960_PERS           0x8C
+#define APDS9960_CONFIG1        0x8D
+#define APDS9960_PPULSE         0x8E
+#define APDS9960_CONTROL        0x8F
+#define APDS9960_CONFIG2        0x90
+#define APDS9960_ID             0x92
+#define APDS9960_STATUS         0x93
+#define APDS9960_CDATAL         0x94
+#define APDS9960_CDATAH         0x95
+#define APDS9960_RDATAL         0x96
+#define APDS9960_RDATAH         0x97
+#define APDS9960_GDATAL         0x98
+#define APDS9960_GDATAH         0x99
+#define APDS9960_BDATAL         0x9A
+#define APDS9960_BDATAH         0x9B
+#define APDS9960_PDATA          0x9C
+#define APDS9960_POFFSET_UR     0x9D
+#define APDS9960_POFFSET_DL     0x9E
+#define APDS9960_CONFIG3        0x9F
+#define APDS9960_GPENTH         0xA0
+#define APDS9960_GEXTH          0xA1
+#define APDS9960_GCONF1         0xA2
+#define APDS9960_GCONF2         0xA3
+#define APDS9960_GOFFSET_U      0xA4
+#define APDS9960_GOFFSET_D      0xA5
+#define APDS9960_GOFFSET_L      0xA7
+#define APDS9960_GOFFSET_R      0xA9
+#define APDS9960_GPULSE         0xA6
+#define APDS9960_GCONF3         0xAA
+#define APDS9960_GCONF4         0xAB
+#define APDS9960_GFLVL          0xAE
+#define APDS9960_GSTATUS        0xAF
+#define APDS9960_IFORCE         0xE4
+#define APDS9960_PICLEAR        0xE5
+#define APDS9960_CICLEAR        0xE6
+#define APDS9960_AICLEAR        0xE7
+#define APDS9960_GFIFO_U        0xFC
+#define APDS9960_GFIFO_D        0xFD
+#define APDS9960_GFIFO_L        0xFE
+#define APDS9960_GFIFO_R        0xFF
 
 /* Bit fields */
 #define APDS9960_PON            0b00000001
@@ -193,10 +190,10 @@ enum {
 
 /* State definitions */
 enum {
-  NA_STATE,
-  NEAR_STATE,
-  FAR_STATE,
-  ALL_STATE
+  NA_STATE1,
+  NEAR_STATE1,
+  FAR_STATE1,
+  ALL_STATE1
 };
 
 /* Container for gesture data */
@@ -321,17 +318,17 @@ class xSL06: public xCoreClass
 	    bool clearProximityInt(void);
 	    
 	    /* Ambient light methods */
-	    bool readAmbientLight(uint16_t &val);
-	    bool readRedLight(uint16_t &val);
-	    bool readGreenLight(uint16_t &val);
-	    bool readBlueLight(uint16_t &val);
+	    bool getAmbientLight(uint16_t &val);
+	    bool getRedLight(uint16_t &val);
+	    bool getGreenLight(uint16_t &val);
+	    bool getBlueLight(uint16_t &val);
 	    
 	    /* Proximity methods */
-	    bool readProximity(uint8_t &val);
+	    bool getProximity(uint8_t &val);
 	    
 	    /* Gesture methods */
 	    bool isGestureAvailable(void);
-	    int readGesture(void);
+	    int getGesture(void);
 	    
 	private:
 

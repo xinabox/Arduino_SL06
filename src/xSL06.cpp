@@ -1,5 +1,5 @@
 /*
-	This is a library for the SL06
+	This is a library for the xSL06
 	Digital Proximity, Ambient Light, RGB and Gesture Sensor
 
 	The board uses I2C for communication.
@@ -10,17 +10,17 @@
 	Data Sheets:
 	APDS-9960 - https://docs.broadcom.com/docs/AV02-4191EN
 */
-
-#include "xSL06.h"
-
-/*---Public Function---*/
-/********************************************************
- 	Constructor
-*********************************************************/
+ 
+ #include <xCore.h>
+ #include "xSL06.h"
+ 
+/**
+ * @brief Constructor - Instantiates xSL06 object
+ */
 xSL06::xSL06()
 {
     APDS9960_I2C_ADDR = 0x39;
-    
+
     gesture_ud_delta_ = 0;
     gesture_lr_delta_ = 0;
     
@@ -34,26 +34,28 @@ xSL06::xSL06()
     gesture_motion_ = DIR_NONE;
 }
  
-/********************************************************
- 	Deconstructor
-*********************************************************/
+/**
+ * @brief Destructor
+ */
 xSL06::~xSL06()
 {
 
 }
 
-
-/********************************************************
- 	Configure Sensor
-*********************************************************/
-bool xSL06::begin(void)
+/**
+ * @brief Configures I2C communications and initializes registers to defaults
+ *
+ * @return True if initialized successfully. False otherwise.
+ */
+bool xSL06::begin()
 {
     uint8_t id;
-     
+
     /* Read ID register and check against known values for APDS-9960 */
     if( !wireReadDataByte(APDS9960_ID, id) ) {
         return false;
     }
+
     if( !(id == APDS9960_ID_1 || id == APDS9960_ID_2) ) {
         return false;
     }
@@ -64,7 +66,7 @@ bool xSL06::begin(void)
     }
     
     /* Set default values for ambient light and proximity registers */
-    if( !wireWriteDataByte(APDS9960_ATIME, DEFAULT_ATIME) ) {
+    if( !wireWriteDataByte(APDS9960_ATIME, DEFAULT_ATIME) ) {       
         return false;
     }
     if( !wireWriteDataByte(APDS9960_WTIME, DEFAULT_WTIME) ) {
@@ -153,15 +155,48 @@ bool xSL06::begin(void)
     if( !setGestureIntEnable(DEFAULT_GIEN) ) {
         return false;
     }
+    
+#if 0
+    /* Gesture config register dump */
+    uint8_t reg;
+    uint8_t val;
+  
+    for(reg = 0x80; reg <= 0xAF; reg++) {
+        if( (reg != 0x82) && \
+            (reg != 0x8A) && \
+            (reg != 0x91) && \
+            (reg != 0xA8) && \
+            (reg != 0xAC) && \
+            (reg != 0xAD) )
+        {
+            wireReadDataByte(reg, val);
+            Serial.print(reg, HEX);
+            Serial.print(": 0x");
+            Serial.println(val, HEX);
+        }
+    }
+
+    for(reg = 0xE4; reg <= 0xE7; reg++) {
+        wireReadDataByte(reg, val);
+        Serial.print(reg, HEX);
+        Serial.print(": 0x");
+        Serial.println(val, HEX);
+    }
+#endif
+
     return true;
 }
+
+/*******************************************************************************
+ * Public methods for controlling the APDS-9960
+ ******************************************************************************/
 
 /**
  * @brief Reads and returns the contents of the ENABLE register
  *
  * @return Contents of the ENABLE register. 0xFF if error.
  */
-uint8_t xSL06::getMode(void)
+uint8_t xSL06::getMode()
 {
     uint8_t enable_value;
     
@@ -419,7 +454,7 @@ bool xSL06::isGestureAvailable()
  *
  * @return Number corresponding to gesture. -1 on error.
  */
-int xSL06::readGesture()
+int xSL06::getGesture()
 {
     uint8_t fifo_level = 0;
     uint8_t bytes_read = 0;
@@ -567,7 +602,7 @@ bool xSL06::disablePower()
  * @param[out] val value of the light sensor.
  * @return True if operation successful. False otherwise.
  */
-bool xSL06::readAmbientLight(uint16_t &val)
+bool xSL06::getAmbientLight(uint16_t &val)
 {
     uint8_t val_byte;
     val = 0;
@@ -593,7 +628,7 @@ bool xSL06::readAmbientLight(uint16_t &val)
  * @param[out] val value of the light sensor.
  * @return True if operation successful. False otherwise.
  */
-bool xSL06::readRedLight(uint16_t &val)
+bool xSL06::getRedLight(uint16_t &val)
 {
     uint8_t val_byte;
     val = 0;
@@ -619,7 +654,7 @@ bool xSL06::readRedLight(uint16_t &val)
  * @param[out] val value of the light sensor.
  * @return True if operation successful. False otherwise.
  */
-bool xSL06::readGreenLight(uint16_t &val)
+bool xSL06::getGreenLight(uint16_t &val)
 {
     uint8_t val_byte;
     val = 0;
@@ -645,7 +680,7 @@ bool xSL06::readGreenLight(uint16_t &val)
  * @param[out] val value of the light sensor.
  * @return True if operation successful. False otherwise.
  */
-bool xSL06::readBlueLight(uint16_t &val)
+bool xSL06::getBlueLight(uint16_t &val)
 {
     uint8_t val_byte;
     val = 0;
@@ -675,7 +710,7 @@ bool xSL06::readBlueLight(uint16_t &val)
  * @param[out] val value of the proximity sensor.
  * @return True if operation successful. False otherwise.
  */
-bool xSL06::readProximity(uint8_t &val)
+bool xSL06::getProximity(uint8_t &val)
 {
     val = 0;
     
@@ -875,9 +910,9 @@ bool xSL06::processGestureData()
             
             if( (gesture_near_count_ >= 10) && (gesture_far_count_ >= 2) ) {
                 if( (ud_delta == 0) && (lr_delta == 0) ) {
-                    gesture_state_ = NEAR_STATE;
+                    gesture_state_ = NEAR_STATE1;
                 } else if( (ud_delta != 0) && (lr_delta != 0) ) {
-                    gesture_state_ = FAR_STATE;
+                    gesture_state_ = FAR_STATE1;
                 }
                 return true;
             }
@@ -922,10 +957,10 @@ bool xSL06::processGestureData()
 bool xSL06::decodeGesture()
 {
     /* Return if near or far event is detected */
-    if( gesture_state_ == NEAR_STATE ) {
+    if( gesture_state_ == NEAR_STATE1 ) {
         gesture_motion_ = DIR_NEAR;
         return true;
-    } else if ( gesture_state_ == FAR_STATE ) {
+    } else if ( gesture_state_ == FAR_STATE1 ) {
         gesture_motion_ = DIR_FAR;
         return true;
     }
@@ -2085,6 +2120,7 @@ bool xSL06::wireWriteDataByte(uint8_t reg, uint8_t val)
     if( Wire.endTransmission() != 0 ) {
         return false;
     }
+
     return true;
 }
 
@@ -2096,7 +2132,9 @@ bool xSL06::wireWriteDataByte(uint8_t reg, uint8_t val)
  * @param[in] len the length (in bytes) of the data to write
  * @return True if successful write operation. False otherwise.
  */
-bool xSL06::wireWriteDataBlock(uint8_t reg, uint8_t *val, unsigned int len)
+bool xSL06::wireWriteDataBlock(  uint8_t reg, 
+                                        uint8_t *val, 
+                                        unsigned int len)
 {
     unsigned int i;
 
@@ -2144,7 +2182,9 @@ bool xSL06::wireReadDataByte(uint8_t reg, uint8_t &val)
  * @param[in] len number of bytes to read
  * @return Number of bytes read. -1 on read error.
  */
-int xSL06::wireReadDataBlock(uint8_t reg, uint8_t *val, unsigned int len)
+int xSL06::wireReadDataBlock(   uint8_t reg, 
+                                        uint8_t *val, 
+                                        unsigned int len)
 {
     unsigned char i = 0;
     
