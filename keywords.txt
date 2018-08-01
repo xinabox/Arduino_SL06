@@ -49,13 +49,13 @@ getGestureIntEnable	KEYWORD2
 setGestureIntEnable	KEYWORD2
 clearAmbientLightInt	KEYWORD2
 clearProximityInt	KEYWORD2
-readAmbientLight	KEYWORD2
-readRedLight	KEYWORD2
-readGreenLight	KEYWORD2
-readBlueLight	KEYWORD2
-readProximity	KEYWORD2
+getAmbientLight	KEYWORD2
+getRedLight	KEYWORD2
+getGreenLight	KEYWORD2
+getBlueLight	KEYWORD2
+getProximity	KEYWORD2
 isGestureAvailable	KEYWORD2
-readGesture	KEYWORD2
+getGesture	KEYWORD2
 
 #######################################
 # Constants 		   		(LITERAL1)
