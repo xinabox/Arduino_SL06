@@ -1,0 +1,62 @@
+#######################################
+# Syntax Coloring Map For SL06
+#######################################
+
+#######################################
+# Instance			   		(KEYWORD1)
+#######################################
+
+#######################################
+# Methods and Functions		(KEYWORD2)
+#######################################
+
+begin	KEYWORD2
+getMode	KEYWORD2
+setMode	KEYWORD2
+enablePower	KEYWORD2
+disablePower	KEYWORD2
+enableLightSensor	KEYWORD2
+disableLightSensor	KEYWORD2
+enableLightSensor	KEYWORD2
+disableLightSensor	KEYWORD2
+enableProximitySensor	KEYWORD2
+disableProximitySensor	KEYWORD2
+enableGestureSensor	KEYWORD2
+disableGestureSensor	KEYWORD2
+getLEDDrive	KEYWORD2
+setLEDDrive	KEYWORD2
+getGestureLEDDrive	KEYWORD2
+setGestureLEDDrive	KEYWORD2
+getAmbientLightGain	KEYWORD2
+setAmbientLightGain	KEYWORD2
+getProximityGain	KEYWORD2
+setProximityGain	KEYWORD2
+getGestureGain	KEYWORD2
+setGestureGain	KEYWORD2
+getLightIntLowThreshold	KEYWORD2
+setLightIntLowThreshold	KEYWORD2
+getLightIntHighThreshold	KEYWORD2
+setLightIntHighThreshold	KEYWORD2
+getProximityIntLowThreshold	KEYWORD2
+setProximityIntLowThreshold	KEYWORD2
+getProximityIntHighThreshold	KEYWORD2
+setProximityIntHighThreshold	KEYWORD2
+getAmbientLightIntEnable	KEYWORD2
+setAmbientLightIntEnable	KEYWORD2
+getProximityIntEnable	KEYWORD2
+setProximityIntEnable	KEYWORD2
+getGestureIntEnable	KEYWORD2
+setGestureIntEnable	KEYWORD2
+clearAmbientLightInt	KEYWORD2
+clearProximityInt	KEYWORD2
+readAmbientLight	KEYWORD2
+readRedLight	KEYWORD2
+readGreenLight	KEYWORD2
+readBlueLight	KEYWORD2
+readProximity	KEYWORD2
+isGestureAvailable	KEYWORD2
+readGesture	KEYWORD2
+
+#######################################
+# Constants 		   		(LITERAL1)
+#######################################
