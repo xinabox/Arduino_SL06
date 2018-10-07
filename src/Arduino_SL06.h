@@ -11,8 +11,8 @@
 	APDS-9960 - https://docs.broadcom.com/docs/AV02-4191EN
 */
 
-#ifndef xSL06_h
-#define xSL06_h
+#ifndef Arduino_SL06_h
+#define Arduino_SL06_h
 
 // Include File Headers
 #include "xCore.h"
