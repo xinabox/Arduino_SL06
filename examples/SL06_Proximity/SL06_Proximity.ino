@@ -13,7 +13,7 @@
 *************************************************************/
 
 #include <xCore.h>
-#include <Arduino_SL06.h>
+#include <arduino-SL06.h>
 
 const int DELAY_TIME = 1000;
 

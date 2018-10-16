@@ -12,7 +12,7 @@
 */
  
  #include <xCore.h>
- #include "Arduino_SL06.h"
+ #include <arduino-SL06.h>
  
 /**
  * @brief Constructor - Instantiates xSL06 object
