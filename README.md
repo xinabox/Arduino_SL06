@@ -1,6 +1,5 @@
 [![Build Status](https://travis-ci.org/xinabox/arduino-SL06.svg?branch=master)](https://travis-ci.org/xinabox/arduino-SL06)
 
-
 # xSL06
 <img src="extras/SL06 V1.0.0.JPG" width="35%" height="auto" align="right">
 Library for SL06: Digital Proximity, Ambient Light, RGB and Gesture Sensor
