@@ -8,10 +8,10 @@ cache:
         - "~/.platformio"
     
 env:
-    - PLATFORMIO_CI_SRC=examples/SL06_Ambient_Light.ino
-    - PLATFORMIO_CI_SRC=examples/SL06_Color.ino
-    - PLATFORMIO_CI_SRC=examples/SL06_Gesture.ino
-    - PLATFORMIO_CI_SRC=examples/SL06_Proximity.ino
+    - PLATFORMIO_CI_SRC=examples/SL06_Ambient_Light/SL06_Ambient_Light.ino
+    - PLATFORMIO_CI_SRC=examples/SL06_Color/SL06_Color.ino
+    - PLATFORMIO_CI_SRC=examples/SL06_Gesture/SL06_Gesture.ino
+    - PLATFORMIO_CI_SRC=examples/SL06_Proximity/SL06_Proximity.ino
 
 install:
     - pip install -U platformio
